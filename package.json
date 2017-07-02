@@ -1,0 +1,15 @@
+{
+  "name": "movie-collection-ui",
+  "version": "1.0.0",
+  "main": "src/server.js",
+  "author": "Steven Weathers",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/server/server.js"
+  },
+  "dependencies": {
+    "hapi": "^16.4.3",
+    "inert": "^4.1.0",
+    "marko": "^4.4.17"
+  }
+}

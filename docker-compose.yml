@@ -1,0 +1,36 @@
+version: "3.1"
+
+services:
+  web:
+    build: .
+    ports:
+     - "8080:8080"
+    depends_on:
+      - api
+    networks:
+      - skynet
+  api:
+    image: stevenweathers/movie-collection-api
+    ports:
+     - "8081:8080"
+    depends_on:
+      - db
+    networks:
+      - skynet
+    # environment:
+    #   - create_user=true
+    #   - create_user_email=steven@test.com
+    #   - create_user_password=test2017
+  db:
+    image: mongo:3.4
+    volumes:
+      - dbdata:/mongo/db
+    networks:
+      - skynet
+
+networks:
+  skynet:
+    driver: bridge
+
+volumes:
+  dbdata:

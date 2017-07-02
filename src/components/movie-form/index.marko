@@ -1,0 +1,40 @@
+<form method="POST" action="/admin/movies">
+  <h2>Add Movie</h2>
+  <div class="form-group">
+    <label for="movietitle">Title</label>
+    <input type="text" class="form-control" id="movietitle" aria-describedby="movietitleHelp" placeholder="Enter title" name="title" />
+    <small id="movietitleHelp" class="form-text text-muted">Title of the Movie.</small>
+  </div>
+  <div class="form-group">
+    <label for="movieyear">Year</label>
+    <input type="text" class="form-control" id="movieyear" aria-describedby="movieyearHelp" placeholder="Enter year" name="year" />
+    <small id="movieyearHelp" class="form-text text-muted">Year of the Movie.</small>
+  </div>
+  <div class="form-group">
+    <label for="movieupc">UPC</label>
+    <input type="text" class="form-control" id="movieupcyear" aria-describedby="movieupcHelp" placeholder="Enter UPC" name="upc" />
+    <small id="movieupcHelp" class="form-text text-muted">UPC of the Movie.</small>
+  </div>
+  <div class="form-group">
+    <label for="movietmdbid">TMDB ID</label>
+    <input type="text" class="form-control" id="movietmdbid" aria-describedby="movietmdbidHelp" placeholder="Enter TMDB ID" value="1" name="tmdb_id">
+    <small id="movietmdbidHelp" class="form-text text-muted">TMDB ID of the Movie.</small>
+  </div>
+  <div class="form-group">
+    <label for="movietmdbimg">TMDB Image URL</label>
+    <input type="text" class="form-control" id="movietmdbimg" aria-describedby="movietmdbimgHelp" placeholder="Enter TMDB Image URL" value="/someimage.jpg" name="tmdb_image_url">
+    <small id="movietmdbimgHelp" class="form-text text-muted">TMDB Image URL of the Movie.</small>
+  </div>
+
+  <div class="form-group">
+    <label for="movieformat">Movie Format</label>
+    <select class="form-control" id="movieformat" name="format">
+      <option value="bluray">Bluray</option>
+      <option value="bluray-dvd-combo">Bluray/DVD Combo</option>
+      <option value="dvd">DVD</option>
+      <option value="4k-uhd">4K UHD</option>
+    </select>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
