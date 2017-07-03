@@ -42,7 +42,7 @@ import footer from '../footer';
 
             <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
               <div class="card-block">
-                <movie-form />
+                <movie-form movie={} />
               </div>
             </div>
           </div>
@@ -61,12 +61,12 @@ import footer from '../footer';
             </tr>
           </thead>
           <tbody>
-            <tr for(movie in input.movies | status-var=loop)>
+            <tr for(movie in input.movies | status-var=loop) id="movie-${loop.getIndex()}">
               <th scope="row">${loop.getIndex()+1}</th>
               <td>${movie.title}</td>
               <td>${movie.year}</td>
               <td>${movie.format}</td>
-              <td>Update / Delete</td>
+              <td><a class="btn btn-primary" href="/admin/movies/${movie._id}">Edit</a> | <a href="#" class="btn btn-danger js-movie-delete" data-movieid="${movie._id}" data-movienum="${loop.getIndex()}">Delete</a></td>
             </tr>
           </tbody>
         </table>
@@ -76,5 +76,7 @@ import footer from '../footer';
 
 
     <include(footer) />
+
+    <script src="/static/js/admin.js"></script>
   </body>
 </html>
