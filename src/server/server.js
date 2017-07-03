@@ -12,7 +12,8 @@ const adminUserEditTemplate = require('./views/admin/edituser');
 
 const Hapi = require("hapi");
 const server = new Hapi.Server();
-const Wreck = require('wreck');
+const Wreck = require("wreck");
+const async = require("async");
 const movieApiHost = process.env.movie_api_host || "api:8080";
 
 server.connection({
@@ -101,12 +102,30 @@ server.register(plugins, err => {
           return reply().redirect("/admin/login");
         }
 
-        // Need to GET formats from API along with Movies
-
-        return Wreck.get(`http://${movieApiHost}/movies`, {json: true}, (err, res, payload) => {
-          if(!err) {
+        return async.parallel({
+            getFormats: function(callback) {
+              return Wreck.get(`http://${movieApiHost}/formats`, {json: true}, (err, res, payload) => {
+                if(!err) {
+                  return callback(null, payload)
+                } else {
+                  return callback(err);
+                }
+              });
+            },
+            getMovies: function(callback) {
+              return Wreck.get(`http://${movieApiHost}/movies`, {json: true}, (err, res, payload) => {
+                if(!err) {
+                  return callback(null, payload)
+                } else {
+                  return callback(err);
+                }
+              });
+            }
+        }, function(err, results) {
+          if (!err) {
             return reply(adminMoviesTemplate.stream({
-              movies: payload.data.movies
+              movies: results.getMovies.data.movies,
+              formats: results.getFormats.data.formats
             })).type('text/html');
           } else {
             return err.statusCode === 401 ? reply().redirect("/admin/login") : reply(err);
@@ -152,12 +171,32 @@ server.register(plugins, err => {
           return reply().redirect("/admin/login");
         }
 
-        return Wreck.get(`http://${movieApiHost}/movies/${request.params.id}`, {
-          json: true
-        }, (err, res, payload) => {
-          if(!err) {
+        return async.parallel({
+            getFormats: function(callback) {
+              return Wreck.get(`http://${movieApiHost}/formats`, {json: true}, (err, res, payload) => {
+                if(!err) {
+                  return callback(null, payload)
+                } else {
+                  return callback(err);
+                }
+              });
+            },
+            getMovie: function(callback) {
+              return Wreck.get(`http://${movieApiHost}/movies/${request.params.id}`, {
+                json: true
+              }, (err, res, payload) => {
+                if(!err) {
+                  return callback(null, payload)
+                } else {
+                  return callback(err);
+                }
+              });
+            }
+        }, function(err, results) {
+          if (!err) {
             return reply(adminMovieEditTemplate.stream({
-              movie: payload.data.movie
+              movie: results.getMovie.data.movie,
+              formats: results.getFormats.data.formats
             })).type('text/html');
           } else {
             return err.statusCode === 401 ? reply().redirect("/admin/login") : reply(err);

@@ -36,10 +36,7 @@
   <div class="form-group">
     <label for="movieformat">Movie Format</label>
     <select class="form-control" id="movieformat" name="format">
-      <option value="bluray" selected=(input.movie.format === "bluray")>Bluray</option>
-      <option value="bluray-dvd-combo" selected=(input.movie.format === "bluray-dvd-combo")>Bluray/DVD Combo</option>
-      <option value="dvd" selected=(input.movie.format === "dvd")>DVD</option>
-      <option value="4k-uhd" selected=(input.movie.format === "4k-uhd")>4K UHD</option>
+      <option for(format in input.formats) value="${format.title}" selected=(input.movie.format === format.title)>${format.title}</option>
     </select>
   </div>
 

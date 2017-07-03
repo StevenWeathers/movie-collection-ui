@@ -8,6 +8,7 @@
     "start": "node src/server/server.js"
   },
   "dependencies": {
+    "async": "^2.5.0",
     "hapi": "^16.4.3",
     "inert": "^4.1.0",
     "marko": "^4.4.17"
