@@ -1,0 +1,17 @@
+<form method="POST" action="/admin/formats" data-edit=(input.edit) class="js-format-form">
+  <if (input.edit)>
+    <h2>Edit Format</h2>
+    <input type="hidden" value="${input.format._id}" name="formatid" />
+  </if>
+  <else>
+    <h2>Add Format</h2>
+  </else>
+
+  <div class="form-group">
+    <label for="formattitle">Title</label>
+    <input type="text" class="form-control" id="formattitle" aria-describedby="formattitleHelp" placeholder="Enter title" name="title" value="${input.format.title}" />
+    <small id="formattitleHelp" class="form-text text-muted">Title of the Format.</small>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>

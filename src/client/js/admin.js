@@ -1,45 +1,8 @@
 // all this is rather hacky, just barebones to make functional until Marko is utilized on front-end
 
-// Delete Movie
-(function(){
-
-  var $deleteMovies = document.getElementsByClassName("js-movie-delete");
-
-  var deleteMovie = function(id, callback) {
-    var xhr = new XMLHttpRequest();
-
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4) {
-        var response = JSON.parse(xhr.response);
-
-        callback(null, response);
-      }
-    };
-
-    xhr.open("DELETE", "/admin/movies/"+id, true);
-    xhr.send();
-  };
-
-  for(var i = 0; i < $deleteMovies.length; i++) {
-    $deleteMovies[i].addEventListener("click", function(event) {
-      event.preventDefault();
-      var movieNum = event.target.dataset.movienum;
-      var movieId = event.target.dataset.movieid;
-
-      deleteMovie(movieId, function(err, response) {
-        if (!err && response.data.deleteMovie._id === movieId) {
-          alert("Movie deleted.");
-          var element = document.getElementById("movie-"+movieNum);
-          element.parentNode.removeChild(element);
-        } else {
-          alert("movie couldn't be deleted");
-        }
-      });
-    });
-  }
-
-}());
-
+/**
+ *  Movies
+ */
 // Edit Movie
 (function(){
 
@@ -90,6 +53,134 @@
 
 }());
 
+// Delete Movie
+(function(){
+
+  var $deleteMovies = document.getElementsByClassName("js-movie-delete");
+
+  var deleteMovie = function(id, callback) {
+    var xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        var response = JSON.parse(xhr.response);
+
+        callback(null, response);
+      }
+    };
+
+    xhr.open("DELETE", "/admin/movies/"+id, true);
+    xhr.send();
+  };
+
+  for(var i = 0; i < $deleteMovies.length; i++) {
+    $deleteMovies[i].addEventListener("click", function(event) {
+      event.preventDefault();
+      var movieNum = event.target.dataset.movienum;
+      var movieId = event.target.dataset.movieid;
+
+      deleteMovie(movieId, function(err, response) {
+        if (!err && response.data.deleteMovie._id === movieId) {
+          alert("Movie deleted.");
+          var element = document.getElementById("movie-" + movieNum);
+          element.parentNode.removeChild(element);
+        } else {
+          alert("movie couldn't be deleted");
+        }
+      });
+    });
+  }
+
+}());
+
+/**
+ *  FORMATS
+ */
+// Edit Format
+(function(){
+
+  var $editFormat = document.getElementsByClassName("js-format-form");
+
+  var editFormat = function(id, format, callback) {
+    var xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status == "200") {
+        var response = JSON.parse(xhr.response);
+
+        callback(null, response);
+      }
+    };
+
+    xhr.open("PUT", "/admin/formats/"+id, true);
+    xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+    xhr.send(JSON.stringify(format));
+  };
+
+  for(var i = 0; i < $editFormat.length; i++) {
+    $editFormat[i].addEventListener("submit", function(event) {
+      var $form = event.target;
+
+      if ($form.dataset.edit) {
+        event.preventDefault();
+        var format = {
+          "title": document.getElementsByName("title")[0].value
+        };
+        var formatId = document.getElementsByName("formatid")[0].value;
+
+        editFormat(formatId, format, function(err, response) {
+          if (!err && response.data.updateFormat._id === formatId) {
+            window.location.reload();
+          } else {
+            alert("format couldn't be updated");
+          }
+        });
+      }
+    });
+  }
+
+}());
+
+// Delete Format
+(function(){
+
+  var $deleteFormats = document.getElementsByClassName("js-format-delete");
+
+  var deleteFormat = function(id, callback) {
+    var xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        var response = JSON.parse(xhr.response);
+
+        callback(null, response);
+      }
+    };
+
+    xhr.open("DELETE", "/admin/formats/"+id, true);
+    xhr.send();
+  };
+
+  for(var i = 0; i < $deleteFormats.length; i++) {
+    $deleteFormats[i].addEventListener("click", function(event) {
+      event.preventDefault();
+      var formatNum = event.target.dataset.formatnum;
+      var formatId = event.target.dataset.formatid;
+
+      deleteFormat(formatId, function(err, response) {
+        if (!err && response.data.deleteFormat._id === formatId) {
+          alert("Format deleted.");
+          var element = document.getElementById("format-" + formatNum);
+          element.parentNode.removeChild(element);
+        } else {
+          alert("Format couldn't be deleted");
+        }
+      });
+    });
+  }
+
+}());
+
 
 /**
  *  USERS
@@ -135,6 +226,46 @@
           }
         });
       }
+    });
+  }
+
+}());
+
+// Delete User
+(function(){
+
+  var $deleteUser = document.getElementsByClassName("js-user-delete");
+
+  var deleteUser = function(id, callback) {
+    var xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4) {
+        var response = JSON.parse(xhr.response);
+
+        callback(null, response);
+      }
+    };
+
+    xhr.open("DELETE", "/admin/users/"+id, true);
+    xhr.send();
+  };
+
+  for(var i = 0; i < $deleteUser.length; i++) {
+    $deleteUser[i].addEventListener("click", function(event) {
+      event.preventDefault();
+      var userNum = event.target.dataset.usernum;
+      var userId = event.target.dataset.userid;
+
+      deleteUser(userId, function(err, response) {
+        if (!err && response.data.deleteUser._id === userId) {
+          alert("User deleted.");
+          var element = document.getElementById("user-" + userNum);
+          element.parentNode.removeChild(element);
+        } else {
+          alert("User couldn't be deleted");
+        }
+      });
     });
   }
 

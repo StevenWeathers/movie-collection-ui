@@ -6,6 +6,7 @@ const admingLoginTemplate = require('./views/admin/login');
 const adminMoviesTemplate = require('./views/admin/movies');
 const adminMovieEditTemplate = require('./views/admin/editmovie');
 const adminFormatsTemplate = require('./views/admin/formats');
+const adminFormatEditTemplate = require('./views/admin/editformat');
 const adminUsersTemplate = require('./views/admin/users');
 const adminUserEditTemplate = require('./views/admin/edituser');
 
@@ -231,7 +232,130 @@ server.register(plugins, err => {
           return reply().redirect("/admin/login");
         }
 
-        return reply(adminFormatsTemplate.stream({})).type('text/html');
+        return Wreck.get(`http://${movieApiHost}/formats`, {
+          json: true,
+          headers: {
+            "Authorization": request.state.mcsession
+          }
+        }, (err, res, payload) => {
+          if(!err) {
+            return reply(adminFormatsTemplate.stream({
+              formats: payload.data.formats
+            })).type('text/html');
+          } else {
+            return err.statusCode === 401 ? reply().redirect("/admin/login") : reply(err);
+          }
+        });
+      }
+    }
+  });
+
+  server.route({
+    method: "GET",
+    path:"/admin/formats/{id}",
+    config: {
+      handler: (request, reply) => {
+        if (!request.state.mcsession) {
+          return reply().redirect("/admin/login");
+        }
+
+        return Wreck.get(`http://${movieApiHost}/formats/${request.params.id}`, {
+          json: true,
+          headers: {
+            "Authorization": request.state.mcsession
+          }
+        }, (err, res, payload) => {
+          if(!err) {
+            return reply(adminFormatEditTemplate.stream({
+              format: payload.data.format
+            })).type('text/html');
+          } else {
+            return err.statusCode === 401 ? reply().redirect("/admin/login") : reply(err);
+          }
+        });
+      }
+    }
+  });
+
+  server.route({
+    method: "POST",
+    path:"/admin/formats",
+    config: {
+      handler: (request, reply) => {
+        if (!request.state.mcsession) {
+          return reply().redirect("/admin/login");
+        }
+        const format = request.payload;
+
+        return Wreck.post(`http://${movieApiHost}/formats`, {
+          json: true,
+          payload: format,
+          headers: {
+            "Authorization": request.state.mcsession
+          }
+        }, (err, res, payload) => {
+          if(!err) {
+            return reply().redirect("/admin/formats");
+          } else {
+            return err.statusCode === 401 ? reply().redirect("/admin/login") : reply(err);
+          }
+        });
+      }
+    }
+  });
+
+  server.route({
+    method: "PUT",
+    path:"/admin/formats/{id}",
+    config: {
+      handler: (request, reply) => {
+        const formatId = request.params.id;
+
+        if (!request.state.mcsession) {
+          return reply().redirect("/admin/login");
+        }
+
+        return Wreck.put(`http://${movieApiHost}/formats/${formatId}`, {
+          json: true,
+          payload: request.payload,
+          headers: {
+            "Authorization": request.state.mcsession
+          }
+        }, (err, res, payload) => {
+          console.log(payload);
+          if(!err) {
+            return reply(payload);
+          } else {
+            return err.statusCode === 401 ? reply().redirect("/admin/login") : reply(err);
+          }
+        });
+      }
+    }
+  });
+
+  server.route({
+    method: "DELETE",
+    path:"/admin/formats/{id}",
+    config: {
+      handler: (request, reply) => {
+        const formatId = request.params.id;
+
+        if (!request.state.mcsession) {
+          return reply().redirect("/admin/login");
+        }
+
+        return Wreck.delete(`http://${movieApiHost}/formats/${formatId}`, {
+          json: true,
+          headers: {
+            "Authorization": request.state.mcsession
+          }
+        }, (err, res, payload) => {
+          if(!err) {
+            return reply(payload);
+          } else {
+            return err.statusCode === 401 ? reply().redirect("/admin/login") : reply(err);
+          }
+        });
       }
     }
   });
@@ -336,6 +460,33 @@ server.register(plugins, err => {
           }
         }, (err, res, payload) => {
           console.log(payload);
+          if(!err) {
+            return reply(payload);
+          } else {
+            return err.statusCode === 401 ? reply().redirect("/admin/login") : reply(err);
+          }
+        });
+      }
+    }
+  });
+
+  server.route({
+    method: "DELETE",
+    path:"/admin/users/{id}",
+    config: {
+      handler: (request, reply) => {
+        const userId = request.params.id;
+
+        if (!request.state.mcsession) {
+          return reply().redirect("/admin/login");
+        }
+
+        return Wreck.delete(`http://${movieApiHost}/users/${userId}`, {
+          json: true,
+          headers: {
+            "Authorization": request.state.mcsession
+          }
+        }, (err, res, payload) => {
           if(!err) {
             return reply(payload);
           } else {
