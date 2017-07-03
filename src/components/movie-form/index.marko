@@ -1,6 +1,7 @@
-<form method="POST" action="/admin/movies">
+<form method="POST" action="/admin/movies" data-edit=(input.edit) class="js-movie-form">
   <if (input.edit)>
     <h2>Edit Movie</h2>
+    <input type="hidden" value="${input.movie._id}" name="movieid" />
   </if>
   <else>
     <h2>Add Movie</h2>

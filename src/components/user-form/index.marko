@@ -1,0 +1,22 @@
+<form method="POST" action="/admin/users" data-edit=(input.edit) class="js-user-form">
+  <if (input.edit)>
+    <h2>Edit User</h2>
+    <input type="hidden" value="${input.user._id}" name="userid" />
+  </if>
+  <else>
+    <h2>Add User</h2>
+  </else>
+
+  <div class="form-group">
+    <label for="useremail">Email</label>
+    <input type="text" class="form-control" id="useremail" aria-describedby="useremailHelp" placeholder="Enter email" name="email" value="${input.user.email}" />
+    <small id="useremailHelp" class="form-text text-muted">Users Email Address used for Login</small>
+  </div>
+  <div class="form-group">
+    <label for="userpassword">Password</label>
+    <input type="password" class="form-control" id="userpassword" aria-describedby="userpasswordHelp" placeholder="Enter password" name="password" />
+    <small id="userpasswordHelp" class="form-text text-muted">Users password to Login</small>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>

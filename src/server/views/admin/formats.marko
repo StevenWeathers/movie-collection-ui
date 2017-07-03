@@ -27,11 +27,52 @@ import footer from '../footer';
 
     <div class="container">
 
-      <h1>Manage Formats</h1>
+      <h1 class="mb-4">Manage Formats</h1>
+
+      <div class="container mb-4">
+        <div id="accordion" role="tablist" aria-multiselectable="false">
+          <div class="card">
+            <div class="card-header" role="tab" id="headingOne">
+              <h5 class="mb-0">
+                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                  Add a Format
+                </a>
+              </h5>
+            </div>
+
+            <div id="collapseOne" class="collapse" role="tabpanel" aria-labelledby="headingOne">
+              <div class="card-block">
+                FORMAT FORM HERE
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <table class="table">
+          <thead class="thead-default">
+            <tr>
+              <th>#</th>
+              <th>Title</th>
+              <th>Slug</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr for(format in input.formats | status-var=loop) id="format-${loop.getIndex()}">
+              <th scope="row">${loop.getIndex()+1}</th>
+              <td>${format.title}</td>
+              <td>${format.slug}</td>
+              <td><a class="btn btn-primary" href="/admin/formats/${format._id}">Edit</a> | <a href="#" class="btn btn-danger js-format-delete" data-formatid="${format._id}" data-formatnum="${loop.getIndex()}">Delete</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
     </div><!-- /.container -->
 
 
     <include(footer) />
+    <script src="/static/js/admin.js"></script>
   </body>
 </html>
