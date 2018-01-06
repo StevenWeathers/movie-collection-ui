@@ -2,17 +2,25 @@
 require('marko/node-require');
 
 
-const adminMovieEditTemplate = require('./views/admin/editmovie');
+
 const adminFormatsTemplate = require('./views/admin/formats');
 const adminFormatEditTemplate = require('./views/admin/editformat');
 const adminUsersTemplate = require('./views/admin/users');
 const adminUserEditTemplate = require('./views/admin/edituser');
+
+const indexHandler = require('./handlers/index');
+const loginIndexHandler = require('./handlers/login/index');
+const loginPostHandler = require('./handlers/login/login');
+const adminMoviesHandler = require('./handlers/admin/movies/index');
+const adminMovieHandler = require('./handlers/admin/movies/movie');
+const adminAddMovieHandler = require('./handlers/admin/movies/add');
 
 const Hapi = require("hapi");
 const server = Hapi.Server({
   port: process.env.PORT || 8080
 });
 const Inert = require('inert');
+
 const Wreck = require("wreck");
 const movieApiHost = process.env.movie_api_host || "api:8080";
 
@@ -35,7 +43,7 @@ server.register([{
       method: "GET",
       path: "/",
       options: {
-        handler: require('./handlers/index')
+        handler: indexHandler
       }
     });
 
@@ -43,7 +51,7 @@ server.register([{
       method: "GET",
       path: "/admin/login",
       options: {
-        handler: require('./handlers/login/index')
+        handler: loginIndexHandler
       }
     });
 
@@ -58,7 +66,7 @@ server.register([{
       method: "POST",
       path: "/admin/login",
       options: {
-        handler: require('./handlers/login/login')
+        handler: loginPostHandler
       }
     });
 
@@ -66,7 +74,7 @@ server.register([{
       method: "GET",
       path: "/admin/movies",
       options: {
-        handler: require('./handlers/admin/movies/index')
+        handler: adminMoviesHandler
       }
     });
 
@@ -74,26 +82,7 @@ server.register([{
       method: "POST",
       path: "/admin/movies",
       options: {
-        handler: async (request, h) => {
-          if (!request.state.mcsession) {
-            return h.redirect("/admin/login");
-          }
-          const movie = request.payload;
-
-          try {
-            const { payload } = await Wreck.post(`http://${movieApiHost}/movies`, {
-              json: true,
-              payload: movie,
-              headers: {
-                "Authorization": request.state.mcsession
-              }
-            });
-
-            return h.redirect("/admin/movies");
-          } catch (err) {
-            return err.statusCode === 401 ? h.redirect("/admin/login") : err;
-          }
-        }
+        handler: adminAddMovieHandler
       }
     });
 
@@ -101,26 +90,7 @@ server.register([{
       method: "GET",
       path: "/admin/movies/{id}",
       options: {
-        handler: async (request, h) => {
-          if (!request.state.mcsession) {
-            return h.redirect("/admin/login");
-          }
-
-          try {
-            const getFormats = Wreck.get(`http://${movieApiHost}/formats`, { json: true });
-            const getMovie = Wreck.get(`http://${movieApiHost}/movies/${request.params.id}`, {
-              json: true
-            });
-            const [movie, formats] = await Promise.all([getMovie, getFormats]);
-
-            return h.response(adminMovieEditTemplate.stream({
-              movie: movie.payload.data.movie,
-              formats: formats.payload.data.formats
-            })).type('text/html').code(200);
-          } catch (err) {
-            return err.statusCode === 401 ? h.redirect("/admin/login") : err;
-          }
-        }
+        handler: adminMovieHandler
       }
     });
 
