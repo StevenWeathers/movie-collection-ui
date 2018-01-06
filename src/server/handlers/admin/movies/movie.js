@@ -2,12 +2,12 @@
 
 const adminMovieEditTemplate = require('../../../views/admin/editmovie');
 const Wreck = require("wreck");
-const movieApiHost = process.env.movie_api_host || "api:8080";
 
 module.exports = async (request, h) => {
   if (!request.state.mcsession) {
     return h.redirect("/admin/login");
   }
+  const movieApiHost = request.server.app.movieApiHost;
 
   try {
     const getFormats = Wreck.get(`http://${movieApiHost}/formats`, { json: true });

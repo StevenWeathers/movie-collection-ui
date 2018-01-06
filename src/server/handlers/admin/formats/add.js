@@ -7,18 +7,18 @@ module.exports = async (request, h) => {
     return h.redirect("/admin/login");
   }
   const movieApiHost = request.server.app.movieApiHost;
-  const movie = request.payload;
+  const format = request.payload;
 
   try {
-    const { payload } = await Wreck.post(`http://${movieApiHost}/movies`, {
+    const { payload } = await Wreck.post(`http://${movieApiHost}/formats`, {
       json: true,
-      payload: movie,
+      payload: format,
       headers: {
         "Authorization": request.state.mcsession
       }
     });
 
-    return h.redirect("/admin/movies");
+    return h.redirect("/admin/formats");
   } catch (err) {
     return err.statusCode === 401 ? h.redirect("/admin/login") : err;
   }

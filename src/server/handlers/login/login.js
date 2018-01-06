@@ -1,9 +1,9 @@
 "use strict";
 
 const Wreck = require("wreck");
-const movieApiHost = process.env.movie_api_host || "api:8080";
 
 module.exports = async (request, h) => {
+  const movieApiHost = request.server.app.movieApiHost;
   const { email, password } = request.payload;
 
   try {
