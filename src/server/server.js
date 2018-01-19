@@ -19,6 +19,7 @@ const adminUserHandler = require('./handlers/admin/users/user');
 const adminUserAddHandler = require('./handlers/admin/users/add');
 const adminUserUpdateHandler = require('./handlers/admin/users/update');
 const adminUserDeleteHandler = require('./handlers/admin/users/delete');
+const adminMatchTMDB = require('./handlers/admin/match-tmdb');
 
 const Hapi = require("hapi");
 const server = Hapi.Server({
@@ -193,6 +194,14 @@ server.register([{
       path: "/admin/users/{id}",
       options: {
         handler: adminUserDeleteHandler
+      }
+    });
+
+    server.route({
+      method: "GET",
+      path: "/admin/match-tmdb",
+      options: {
+        handler: adminMatchTMDB
       }
     });
   })

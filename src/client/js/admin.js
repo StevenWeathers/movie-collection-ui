@@ -41,7 +41,7 @@
         var movieId = document.getElementsByName("movieid")[0].value;
 
         editMovie(movieId, movie, function(err, response) {
-          if (!err && response.data.updateMovie._id === movieId) {
+          if (!err) {
             window.location.reload();
           } else {
             alert("movie couldn't be updated");
@@ -129,7 +129,7 @@
         var formatId = document.getElementsByName("formatid")[0].value;
 
         editFormat(formatId, format, function(err, response) {
-          if (!err && response.data.updateFormat._id === formatId) {
+          if (!err) {
             window.location.reload();
           } else {
             alert("format couldn't be updated");
@@ -219,7 +219,7 @@
         var userId = document.getElementsByName("userid")[0].value;
 
         editUser(userId, user, function(err, response) {
-          if (!err && response.data.updateUser._id === userId) {
+          if (!err) {
             window.location.reload();
           } else {
             alert("user couldn't be updated");
@@ -268,5 +268,55 @@
       });
     });
   }
+
+}());
+
+// TMDB
+(function(){
+  var $matchTmdb = document.getElementById("movietitle");
+
+  var matchTmdb = function(movieTitle, callback) {
+    var xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status == "200") {
+        callback(null, xhr.response);
+      }
+    };
+
+    xhr.open("GET", "/admin/match-tmdb?title=" + movieTitle, true);
+    xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
+    xhr.send();
+  };
+
+  $matchTmdb.addEventListener("input", function(event) {
+    matchTmdb(event.target.value, function(err, response) {
+      if (!err) {
+        document.getElementById('MatchedMovies').innerHTML = response;
+
+        var $matchedMovie = document.getElementsByClassName("js-matched-movie");
+
+        for(var i = 0; i < $matchedMovie.length; i++) {
+          $matchedMovie[i].addEventListener("click", function(event) {
+            event.preventDefault();
+            var matchedInfo = event.target.dataset;
+            var id = matchedInfo.id;
+            var year = matchedInfo.year;
+            var poster = matchedInfo.poster;
+            var title = matchedInfo.title;
+
+            document.getElementById('movieyear').value = year;
+            document.getElementById('movietmdbid').value = id;
+            document.getElementById('movietmdbimg').value = poster;
+            document.getElementById('movietitle').value = title;
+
+            document.getElementById('MatchedMovies').innerHTML = '';
+          });
+        }
+      } else {
+        alert("movie couldn't be matched");
+      }
+    });
+  });
 
 }());
