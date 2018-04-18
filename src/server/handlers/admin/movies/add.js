@@ -1,10 +1,10 @@
-'use strict';
+'use strict'
 
 const Wreck = require('wreck')
 
 module.exports = async (request, h) => {
   if (!request.state.mcsession) {
-    return h.redirect('/admin/login')
+    return h.code(401).response('failure')
   }
   const movieApiHost = request.server.app.movieApiHost
   const movie = request.payload
@@ -18,8 +18,8 @@ module.exports = async (request, h) => {
       }
     })
 
-    return h.redirect('/admin/movies')
+    return h.response(payload)
   } catch (err) {
-    return err.statusCode === 401 ? h.redirect('/admin/login') : err
+    return err
   }
 }

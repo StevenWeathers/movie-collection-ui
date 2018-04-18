@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
 import {
-  Row
+  Row,
+  Divider
 } from 'antd'
 
-export default class AdminMovies extends Component {
+export default class AdminUsers extends Component {
   render () {
     return (
       <Row gutter={16}>
-        Admin Movies
+        <br />
+        Manage Users
+        <Divider />
       </Row>
     )
   }

@@ -1,21 +1,19 @@
 import React, { Component } from 'react'
 import {
   Row,
-  Menu,
-  Icon
+  Menu
 } from 'antd'
 
 import {
-  BrowserRouter as Router,
   Route,
   Link
 } from 'react-router-dom'
 
-import AdminMovies from './Movies'
-import AdminFormats from './Formats'
-import AdminUsers from './Users'
+import AdminMovies from './Movies/index'
+import AdminFormats from './Formats/index'
+import AdminUsers from './Users/index'
 
-export default class AdminDashboard extends Component {
+export default class Admin extends Component {
   render () {
     return (
       <Row gutter={16}>
@@ -33,9 +31,9 @@ export default class AdminDashboard extends Component {
           </Menu.Item>
         </Menu>
 
-        <Route exact path='/admin/movies' component={AdminMovies} />
-        <Route exact path='/admin/formats' component={AdminFormats} />
-        <Route exact path='/admin/users' component={AdminUsers} />
+        <Route path='/admin/movies' component={AdminMovies} />
+        <Route path='/admin/formats' component={AdminFormats} />
+        <Route path='/admin/users' component={AdminUsers} />
       </Row>
     )
   }

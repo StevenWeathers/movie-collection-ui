@@ -3,6 +3,7 @@ require('marko/node-require')
 
 const indexHandler = require('./handlers/index')
 const moviesHandler = require('./handlers/movies')
+const formatsHandler = require('./handlers/formats')
 const loginIndexHandler = require('./handlers/login/index')
 const loginPostHandler = require('./handlers/login/login')
 const adminMoviesHandler = require('./handlers/admin/movies/index')
@@ -61,6 +62,14 @@ server.register([{
       path: '/movies',
       options: {
         handler: moviesHandler
+      }
+    })
+
+    server.route({
+      method: 'GET',
+      path: '/formats',
+      options: {
+        handler: formatsHandler
       }
     })
 

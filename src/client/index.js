@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom'
 import {
   BrowserRouter as Router,
   Route,
-  Link
+  Link,
+  Redirect
 } from 'react-router-dom'
 import {
   Layout,
@@ -11,13 +12,15 @@ import {
 } from 'antd'
 import './styles.css'
 
-import MoviesApp from './components/MoviesApp'
-import AdminDashboard from './components/Admin/Dashboard'
+import Movies from './Movies/index'
+import Admin from './Admin/index'
 
 const {
   Header,
   Content
 } = Layout
+
+const loggedIn = true // @TODO - determine this via cookie being set
 
 ReactDOM.render(
   <Router>
@@ -35,8 +38,14 @@ ReactDOM.render(
       </Header>
       <Content style={{ padding: '0 50px' }}>
         <div style={{ background: '#fff', padding: 24 }}>
-          <Route exact path='/' component={MoviesApp} />
-          <Route path='/admin' component={AdminDashboard} />
+          <Route exact path='/' component={Movies} />
+          <Route path='/admin' render={() => (
+            loggedIn ? (
+              <Admin />
+            ) : (
+              <Redirect to='/' />
+            )
+          )} />
         </div>
       </Content>
     </Layout>

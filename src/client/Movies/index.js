@@ -5,9 +5,13 @@ import {
   Col,
 } from 'antd'
 
+import {
+  Link
+} from 'react-router-dom'
+
 const tmdbHost = 'http://image.tmdb.org/t/p/w154'
 
-export default class MoviesApp extends Component {
+export default class Movies extends Component {
   state = {
     movies: [],
   }
@@ -48,7 +52,7 @@ export default class MoviesApp extends Component {
             >
               <Card
 
-                title={title} extra={<a href={slug}>View</a>}>
+                title={title} extra={<Link to={`/movie/${slug}`}>View</Link>}>
                 <img src={`${tmdbHost}${tmdb_image_url}`} />
               </Card>
             </Col>
