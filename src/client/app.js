@@ -48,6 +48,7 @@ class MoviesApp extends Component {
       path: '/',
       expires: tomorrow
     })
+
     this.setState({
       session: token
     })

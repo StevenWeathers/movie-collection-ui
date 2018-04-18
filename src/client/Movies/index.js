@@ -5,6 +5,7 @@ import {
   Col,
   Spin
 } from 'antd'
+import axios from 'axios'
 
 import {
   Link
@@ -24,11 +25,11 @@ export default class Movies extends Component {
 
   getMovies = async () => {
     try {
-      const response = await fetch('/api/movies');
-      const { data } = await response.json();
+      const { data } = await axios.get('/api/movies')
+      const { movies } = data.data
 
       this.setState({
-        movies: data.movies,
+        movies,
         isLoading: false
       })
     } catch (e) {

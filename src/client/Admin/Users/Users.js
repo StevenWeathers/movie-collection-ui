@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import axios from 'axios'
 import {
   Row,
   Button,
@@ -31,15 +32,15 @@ export default class Users extends Component {
 
   getUsers = async () => {
     try {
-      const response = await fetch('/api/users', {
+      const { data } = await axios.get('/api/users', {
         headers: {
           'Authorization': this.props.session
-        },
+        }
       });
-      const { data } = await response.json();
+      const { users } = data.data;
 
       this.setState({
-        users: data.users,
+        users,
         isLoading: false,
       })
     } catch (e) {

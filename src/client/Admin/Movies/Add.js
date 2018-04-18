@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import axios from 'axios'
 import {
   Redirect
 } from 'react-router-dom'
@@ -37,20 +38,20 @@ class AddMovieForm extends Component {
 
   getFormats = async () => {
     try {
-      const response = await fetch('/api/formats');
-      const { data } = await response.json();
+      const { data } = await axios.get('/api/formats')
+      const { formats } = data.data
 
       this.setState({
-        formats: data.formats,
+        formats,
         isLoading: false,
       })
     } catch (e) {
-      console.log('error >>> ', e);
+      console.log('error >>> ', e)
     }
   }
 
   handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
@@ -59,21 +60,17 @@ class AddMovieForm extends Component {
         })
 
         try {
-          const response = await fetch('/api/movies', {
-            body: JSON.stringify(values),
+          const response = await axios.post('/api/movies', values, {
             headers: {
-              'content-type': 'application/json',
               'Authorization': this.props.session
-            },
-            method: 'POST'
+            }
           })
-          const { data } = await response.json()
   
           this.setState({
             movieAdded: true,
           })
         } catch (e) {
-          console.log('add movie error >>> ', e);
+          console.log('add movie error >>> ', e)
           this.setState({
             isLoading: false,
           })

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import axios from 'axios'
 import {
   Row,
   Button,
@@ -31,11 +32,11 @@ export default class Formats extends Component {
 
   getFormats = async () => {
     try {
-      const response = await fetch('/api/formats');
-      const { data } = await response.json();
+      const { data } = await axios.get('/api/formats');
+      const { formats } = data.data;
 
       this.setState({
-        formats: data.formats,
+        formats,
         isLoading: false,
       })
     } catch (e) {
