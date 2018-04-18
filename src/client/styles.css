@@ -1,8 +1,1 @@
-@import "~@blueprintjs/core/lib/css/blueprint.css";
-@import "~@blueprintjs/icons/lib/css/blueprint-icons.css";
-@import "~flexboxgrid/css/flexboxgrid.css";
-
-/* for navbar */
-body {
-    padding-top: 50px;
-}
+@import '~antd/dist/antd.css';

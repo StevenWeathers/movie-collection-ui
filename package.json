@@ -8,8 +8,7 @@
     "start": "webpack --config webpack.config.js --mode=production && node src/server/server.js"
   },
   "dependencies": {
-    "@blueprintjs/core": "^2.1.1",
-    "flexboxgrid": "^6.3.1",
+    "antd": "^3.4.1",
     "hapi": "^17.2.0",
     "inert": "^5.0.1",
     "lodash": "^4.17.5",

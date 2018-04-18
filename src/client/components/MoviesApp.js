@@ -1,19 +1,18 @@
-import _ from 'lodash';
 import React, { Component } from 'react'
 import {
-  Intent,
-  Alignment,
-  Spinner,
-  Navbar,
-  NavbarGroup,
-  NavbarHeading,
-  NavbarDivider,
-  Button,
   Card,
-  Elevation
-} from '@blueprintjs/core'
+  Row,
+  Col,
+  Layout,
+  Menu
+} from 'antd'
 
-const tmdb_host = 'http://image.tmdb.org/t/p/w154'
+const {
+  Header,
+  Content
+} = Layout
+
+const tmdbHost = 'http://image.tmdb.org/t/p/w154'
 
 export default class MoviesApp extends Component {
   state = {
@@ -43,40 +42,42 @@ export default class MoviesApp extends Component {
     } = this.state
 
     return (
-      <div>
-        <Navbar className='pt-dark pt-fixed-top'>
-          <NavbarGroup align={Alignment.LEFT}>
-            <NavbarHeading>MyMovies</NavbarHeading>
-            <NavbarDivider />
-            <Button className='pt-minimal' text='Home' />
-          </NavbarGroup>
-        </Navbar>
-        <div class='row'>
-          <div class='col-xs-12 col-md-12 col-lg-12'>
-            {/* <Spinner intent={Intent.PRIMARY} /> */}
-            <div class="row">
+      <Layout className='layout'>
+        <Header>
+          <Menu
+            theme='dark'
+            mode='horizontal'
+            defaultSelectedKeys={['1']}
+            style={{ lineHeight: '64px' }}
+          >
+            <Menu.Item key='1'>MyMovies</Menu.Item>
+          </Menu>
+        </Header>
+        <Content style={{ padding: '0 50px' }}>
+          <div style={{ background: '#fff', padding: 24 }}>
+            <Row gutter={16}>
               {
-                movies.length > 0 &&
-                _.map(movies, ({
+                movies.map(({
                   title,
                   tmdb_image_url,
-                  slug,
-                }, index) => (
-                  <div class='col-xs-3 col-md-3 col-lg-3'>
-                    <Card interactive elevation={Elevation.TWO}>
-                      <p><img src={`${tmdb_host}${tmdb_image_url}`} /></p>
-                      <h5>
-                        {title}
-                      </h5>
-                      <Button>View</Button>
+                  slug
+                }) => (
+                  <Col
+                    span={6}
+                    key={slug}
+                  >
+                    <Card
+
+                      title={title} extra={<a href={slug}>View</a>}>
+                      <img src={`${tmdbHost}${tmdb_image_url}`} />
                     </Card>
-                  </div>
+                  </Col>
                 ))
               }
-            </div>
+            </Row>
           </div>
-        </div>
-      </div>
+        </Content>
+      </Layout>
     )
   }
 }
