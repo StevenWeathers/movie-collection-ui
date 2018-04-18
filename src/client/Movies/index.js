@@ -3,6 +3,7 @@ import {
   Card,
   Row,
   Col,
+  Spin
 } from 'antd'
 
 import {
@@ -22,11 +23,11 @@ export default class Movies extends Component {
 
   getMovies = async () => {
     try {
-      const response = await fetch('/movies');
-      const movies = await response.json();
+      const response = await fetch('/api/movies');
+      const { data } = await response.json();
 
       this.setState({
-        movies,
+        movies: data.movies,
       })
     } catch (e) {
       console.log('error >>> ', e);
@@ -37,6 +38,12 @@ export default class Movies extends Component {
     const {
       movies
     } = this.state
+
+    if (isLoading) {
+      return (
+        <Spin size="large" />
+      )
+    }
 
     return (
       <Row gutter={16}>

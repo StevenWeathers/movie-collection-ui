@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import {
   Redirect
 } from 'react-router-dom'
@@ -20,6 +21,10 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 
 class AddMovieForm extends Component {
+  static propTypes = {
+    session: PropTypes.string.isRequired
+  }
+  
   state = {
     formats: [],
     isLoading: true,
@@ -32,11 +37,11 @@ class AddMovieForm extends Component {
 
   getFormats = async () => {
     try {
-      const response = await fetch('/formats');
-      const formats = await response.json();
+      const response = await fetch('/api/formats');
+      const { data } = await response.json();
 
       this.setState({
-        formats,
+        formats: data.formats,
         isLoading: false,
       })
     } catch (e) {
@@ -49,21 +54,20 @@ class AddMovieForm extends Component {
 
     this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
         this.setState({
           isLoading: true,
         })
 
         try {
-          const response = await fetch('/admin/movies', {
+          const response = await fetch('/api/movies', {
             body: JSON.stringify(values),
             headers: {
-              'content-type': 'application/json'
+              'content-type': 'application/json',
+              'Authorization': this.props.session
             },
-            method: 'POST',
-            credentials: 'same-origin'
+            method: 'POST'
           })
-          const result = await response.json()
+          const { data } = await response.json()
   
           this.setState({
             movieAdded: true,
@@ -79,7 +83,11 @@ class AddMovieForm extends Component {
   }
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const {
+      form
+    } = this.props
+
+    const { getFieldDecorator } = form;
 
     const {
       isLoading,
@@ -97,7 +105,7 @@ class AddMovieForm extends Component {
       return (
         <Spin size="large" />
       )
-    }    
+    }
 
     return (
       <Form onSubmit={this.handleSubmit}>

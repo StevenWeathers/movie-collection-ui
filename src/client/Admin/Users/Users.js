@@ -15,27 +15,31 @@ import {
   Link
 } from 'react-router-dom'
 
-export default class Movies extends Component {
+export default class Users extends Component {
   static propTypes = {
     session: PropTypes.string.isRequired
   }
   
   state = {
-    movies: [],
+    users: [],
     isLoading: true,
   }
 
   componentDidMount = () => {
-    this.getMovies();
+    this.getUsers();
   }
 
-  getMovies = async () => {
+  getUsers = async () => {
     try {
-      const response = await fetch('/api/movies');
+      const response = await fetch('/api/users', {
+        headers: {
+          'Authorization': this.props.session
+        },
+      });
       const { data } = await response.json();
 
       this.setState({
-        movies: data.movies,
+        users: data.users,
         isLoading: false,
       })
     } catch (e) {
@@ -50,27 +54,22 @@ export default class Movies extends Component {
 
     const {
       isLoading,
-      movies,
+      users,
     } = this.state
 
     if (isLoading) {
-      return (
-        <Spin size="large" />
-      )
+        return (
+            <Spin size="large" />
+        )
     }
 
     return (
       <Row>
-        <Table dataSource={movies}>
+        <Table dataSource={users}>
           <Column
-            title="Title"
-            dataIndex="title"
-            key="title"
-          />
-          <Column
-            title="Format"
-            dataIndex="format"
-            key="format"
+            title="Email"
+            dataIndex="email"
+            key="email"
           />
           <Column
             title="Action"
@@ -86,7 +85,7 @@ export default class Movies extends Component {
           />
         </Table>
 
-        <Button type='primary'><Link to='/admin/movies/add'>Add Movie</Link></Button>
+        <Button type='primary'><Link to='/admin/users/add'>Add User</Link></Button>
       </Row>
     )
   }

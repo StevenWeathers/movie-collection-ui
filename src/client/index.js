@@ -1,54 +1,12 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import {
-  BrowserRouter as Router,
-  Route,
-  Link,
-  Redirect
-} from 'react-router-dom'
-import {
-  Layout,
-  Menu
-} from 'antd'
-import './styles.css'
-
-import Movies from './Movies/index'
-import Admin from './Admin/index'
-
-const {
-  Header,
-  Content
-} = Layout
-
-const loggedIn = true // @TODO - determine this via cookie being set
+import { CookiesProvider } from 'react-cookie'
+import MoviesApp from './app'
 
 ReactDOM.render(
-  <Router>
-    <Layout className='layout'>
-      <Header>
-        <Menu
-          theme='dark'
-          mode='horizontal'
-          defaultSelectedKeys={['1']}
-          style={{ lineHeight: '64px' }}
-        >
-          <Menu.Item key='home'><Link to='/'>MyMovies</Link></Menu.Item>
-          <Menu.Item key='admin'><Link to='/admin'>Admin</Link></Menu.Item>
-        </Menu>
-      </Header>
-      <Content style={{ padding: '0 50px' }}>
-        <div style={{ background: '#fff', padding: 24 }}>
-          <Route exact path='/' component={Movies} />
-          <Route path='/admin' render={() => (
-            loggedIn ? (
-              <Admin />
-            ) : (
-              <Redirect to='/' />
-            )
-          )} />
-        </div>
-      </Content>
-    </Layout>
-  </Router>,
+  <CookiesProvider>
+    <MoviesApp />
+  </CookiesProvider>
+  ,
   document.getElementById('moviesApp')
 )

@@ -15,27 +15,27 @@ import {
   Link
 } from 'react-router-dom'
 
-export default class Movies extends Component {
+export default class Formats extends Component {
   static propTypes = {
     session: PropTypes.string.isRequired
   }
   
   state = {
-    movies: [],
+    formats: [],
     isLoading: true,
   }
 
   componentDidMount = () => {
-    this.getMovies();
+    this.getFormats();
   }
 
-  getMovies = async () => {
+  getFormats = async () => {
     try {
-      const response = await fetch('/api/movies');
+      const response = await fetch('/api/formats');
       const { data } = await response.json();
 
       this.setState({
-        movies: data.movies,
+        formats: data.formats,
         isLoading: false,
       })
     } catch (e) {
@@ -50,7 +50,7 @@ export default class Movies extends Component {
 
     const {
       isLoading,
-      movies,
+      formats,
     } = this.state
 
     if (isLoading) {
@@ -61,16 +61,11 @@ export default class Movies extends Component {
 
     return (
       <Row>
-        <Table dataSource={movies}>
+        <Table dataSource={formats}>
           <Column
             title="Title"
             dataIndex="title"
             key="title"
-          />
-          <Column
-            title="Format"
-            dataIndex="format"
-            key="format"
           />
           <Column
             title="Action"
@@ -86,7 +81,7 @@ export default class Movies extends Component {
           />
         </Table>
 
-        <Button type='primary'><Link to='/admin/movies/add'>Add Movie</Link></Button>
+        <Button type='primary'><Link to='/admin/formats/add'>Add Format</Link></Button>
       </Row>
     )
   }

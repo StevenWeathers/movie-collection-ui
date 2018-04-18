@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+
 import {
   Row,
   Menu
@@ -14,7 +16,15 @@ import AdminFormats from './Formats/index'
 import AdminUsers from './Users/index'
 
 export default class Admin extends Component {
+  static propTypes = {
+    session: PropTypes.string.isRequired
+  }
+
   render () {
+    const {
+      session
+    } = this.props
+
     return (
       <Row gutter={16}>
         <Menu
@@ -31,9 +41,21 @@ export default class Admin extends Component {
           </Menu.Item>
         </Menu>
 
-        <Route path='/admin/movies' component={AdminMovies} />
-        <Route path='/admin/formats' component={AdminFormats} />
-        <Route path='/admin/users' component={AdminUsers} />
+        <Route path='/admin/movies' render={() => (
+          <AdminMovies
+            session={session}
+          />
+        )}/>
+        <Route path='/admin/formats' render={() => (
+          <AdminFormats
+            session={session}
+          />
+        )}/>
+        <Route path='/admin/users' render={() => (
+          <AdminUsers
+            session={session}
+          />
+        )}/>
       </Row>
     )
   }

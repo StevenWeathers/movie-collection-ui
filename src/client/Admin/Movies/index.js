@@ -1,50 +1,26 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import {
   Row,
-  Button,
-  Divider,
-  Table,
+  Divider
 } from 'antd'
 
-const { Column, ColumnGroup } = Table;
-
 import {
-  Route,
-  Link
+  Route
 } from 'react-router-dom'
 
 import Movies from './Movies'
 import AddMovie from './Add'
 
 export default class AdminMovies extends Component {
-  state = {
-    movies: [],
-    isLoading: true,
-  }
-
-  componentDidMount = () => {
-    this.getMovies();
-  }
-
-  getMovies = async () => {
-    try {
-      const response = await fetch('/movies');
-      const movies = await response.json();
-
-      this.setState({
-        movies,
-        isLoading: false,
-      })
-    } catch (e) {
-      console.log('error >>> ', e);
-    }
+  static propTypes = {
+    session: PropTypes.string.isRequired
   }
 
   render () {
     const {
-      isLoading,
-      movies,
-    } = this.state
+      session
+    } = this.props
 
     return (
       <Row>
@@ -52,8 +28,16 @@ export default class AdminMovies extends Component {
         Manage movies
         <Divider />
 
-        <Route exact path='/admin/movies' component={Movies} /> 
-        <Route exact path='/admin/movies/add' component={AddMovie} />
+        <Route exact path='/admin/movies' render={() => (
+          <Movies
+            session={session}
+          />
+        )}/>
+        <Route exact path='/admin/movies/add' render={() => (
+          <AddMovie
+            session={session}
+          />
+        )}/>
       </Row>
     )
   }
