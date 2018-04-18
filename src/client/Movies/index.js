@@ -14,6 +14,7 @@ const tmdbHost = 'http://image.tmdb.org/t/p/w154'
 
 export default class Movies extends Component {
   state = {
+    isLoading: true,
     movies: [],
   }
 
@@ -28,6 +29,7 @@ export default class Movies extends Component {
 
       this.setState({
         movies: data.movies,
+        isLoading: false
       })
     } catch (e) {
       console.log('error >>> ', e);
@@ -36,6 +38,7 @@ export default class Movies extends Component {
 
   render () {
     const {
+      isLoading,
       movies
     } = this.state
 
