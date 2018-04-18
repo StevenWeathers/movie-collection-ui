@@ -15,6 +15,7 @@
     "marko": "^4.4.17",
     "react": "^16.3.1",
     "react-dom": "^16.3.1",
+    "react-router-dom": "^4.2.2",
     "react-transition-group": "^2.3.0",
     "wreck": "^14.0.2"
   },
