@@ -36,6 +36,11 @@ class MovieForm extends Component {
     movie: null,
     formats: [],
     tmdbResults: [],
+    tmdbInfo: {
+      year: null,
+      tmdb_id: null,
+      tmdb_image_url: null
+    },
     isLoading: true,
     movieAdded: false,
   }
@@ -90,14 +95,30 @@ class MovieForm extends Component {
       const { data } = await axios.get(`/api/match-tmdb?title=${title}`)
       const { results } = data
 
-      console.log(data)
-
       this.setState({
         tmdbResults: results,
       })
     } catch (e) {
       console.log('error >>> ', e)
     }
+  }
+
+  onTmdbClick = result => () => {
+    const {
+      release_date,
+      id,
+      poster_path
+    } = result
+
+    const tmdbInfo = {
+      year: release_date.substr(0, 4),
+      tmdb_id: `${id}`,
+      tmdb_image_url: poster_path
+    }
+    
+    this.setState({
+      tmdbInfo
+    })
   }
 
   handleSubmit = (e) => {
@@ -151,7 +172,8 @@ class MovieForm extends Component {
       isLoading,
       formats,
       movieAdded,
-      tmdbResults
+      tmdbResults,
+      tmdbInfo
     } = this.state
 
     const isEdit = movieId !== '' && movie
@@ -195,7 +217,7 @@ class MovieForm extends Component {
                   { required: true, message: 'Please input a Movie Year' },
                   { pattern: /(?:19|20)\d{2}/, message: 'Please enter a valid year e.g. 2018' }
                 ],
-                initialValue: isEdit ? movie.year : null
+                initialValue: isEdit ? movie.year : tmdbInfo.year
               })(
                 <Input placeholder="Year" />
               )}
@@ -211,7 +233,7 @@ class MovieForm extends Component {
             <FormItem>
               {getFieldDecorator('tmdb_id', {
                 rules: [{ required: true, message: 'Please input a Movie TMDB ID' }],
-                initialValue: isEdit ? movie.tmdb_id : null
+                initialValue: isEdit ? movie.tmdb_id : tmdbInfo.tmdb_id
               })(
                 <Input placeholder="TMDB ID" />
               )}
@@ -219,7 +241,7 @@ class MovieForm extends Component {
             <FormItem>
               {getFieldDecorator('tmdb_image_url', {
                 rules: [{ required: true, message: 'Please input a Movie TMDB Image URL' }],
-                initialValue: isEdit ? movie.tmdb_image_url : null
+                initialValue: isEdit ? movie.tmdb_image_url : tmdbInfo.tmdb_image_url
               })(
                 <Input placeholder="TMDB Image URL" />
               )}
@@ -255,12 +277,14 @@ class MovieForm extends Component {
           <h2>TMDB Results</h2>
           <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
             {
-              tmdbResults.map(({
-                title,
-                release_date,
-                poster_path,
-                id
-              }) => {
+              tmdbResults.map((result) => {
+                const {
+                  title,
+                  release_date,
+                  poster_path,
+                  id
+                } = result
+
                 return (
                   <Col
                     xs={24}
@@ -270,10 +294,14 @@ class MovieForm extends Component {
                     xl={6}
                     key={id}
                   >
-                    <Card>
-                      <h3>{title}</h3>
-                      <h4>{release_date.substr(0, 4)}</h4>
-                      <img src={`${tmdbHost}${poster_path}`} style={{ maxWidth: 100 }} />
+                    <Card
+                      cover={<img src={`${tmdbHost}${poster_path}`} style={{ maxWidth: '100%' }} />}
+                    >
+                      <h2>{title}</h2>
+                      <h3>{release_date.substr(0, 4)}</h3><br />
+                      <Button type="primary" onClick={this.onTmdbClick(result)} style={{ width: '100%' }}>
+                        Select
+                      </Button>
                     </Card>
                   </Col>
                 )
