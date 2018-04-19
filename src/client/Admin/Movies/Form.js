@@ -259,7 +259,7 @@ class MovieForm extends Component {
                 title,
                 release_date,
                 poster_path,
-                _id
+                id
               }) => {
                 return (
                   <Col
@@ -268,7 +268,7 @@ class MovieForm extends Component {
                     md={12}
                     lg={8}
                     xl={6}
-                    key={_id}
+                    key={id}
                   >
                     <Card>
                       <h3>{title}</h3>
