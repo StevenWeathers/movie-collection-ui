@@ -110,7 +110,7 @@ class MovieForm extends Component {
             movieAdded: true,
           })
         } catch (e) {
-          console.log('add movie error >>> ', e)
+          console.log('movie error >>> ', e)
           this.setState({
             isLoading: false,
           })
@@ -124,10 +124,6 @@ class MovieForm extends Component {
       form,
       movieId
     } = this.props
-
-    const isEdit = movieId !== ''
-    const titleContext = isEdit ? 'Edit Movie' : 'Add Movie'
-
     const { getFieldDecorator } = form;
 
     const {
@@ -136,6 +132,9 @@ class MovieForm extends Component {
       formats,
       movieAdded
     } = this.state
+
+    const isEdit = movieId !== '' && movie
+    const titleContext = isEdit ? 'Edit Movie' : 'Add Movie'
 
     if (movieAdded) {
       return (
@@ -151,7 +150,7 @@ class MovieForm extends Component {
 
     return (
       <Form onSubmit={this.handleSubmit}>
-        <h3>{titleContext} Movie</h3>
+        <h3>{titleContext}</h3>
         
         <FormItem>
           {getFieldDecorator('title', {

@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
+
 import {
   Row,
   Button,
   Table,
   Divider,
-  Spin
+  Spin,
+  Icon
 } from 'antd'
 
 const { Column, ColumnGroup } = Table;
@@ -32,6 +34,10 @@ export default class Formats extends Component {
 
   getFormats = async () => {
     try {
+      this.setState({
+        isLoading: true,
+      })
+
       const { data } = await axios.get('/api/formats');
       const { formats } = data.data;
 
@@ -39,6 +45,20 @@ export default class Formats extends Component {
         formats,
         isLoading: false,
       })
+    } catch (e) {
+      console.log('error >>> ', e);
+    }
+  }
+
+  handleFormatDelete = format => async () => {
+    try {
+      const response = await axios.delete(`/api/formats/${format._id}`, {
+        headers: {
+          'Authorization': this.props.session
+        }
+      })
+
+      this.getFormats();
     } catch (e) {
       console.log('error >>> ', e);
     }
@@ -68,12 +88,14 @@ export default class Formats extends Component {
             title="Action"
             key="action"
             render={(text, record) => (
-              <span>
-                <a href="javascript:;">Edit</a>
-                <Divider type="vertical" />
-                <a href="javascript:;">Delete</a>
-                <Divider type="vertical" />
-              </span>
+              <Button.Group>
+                <Button type="primary">
+                  <Link to={`/admin/formats/edit/${record._id}`}><Icon type="edit" />Edit</Link>
+                </Button>
+                <Button type="danger" onClick={this.handleFormatDelete(record)}>
+                  <Icon type="delete" />Delete
+                </Button>
+              </Button.Group>
             )}
           />
         </Table>

@@ -10,6 +10,7 @@ import {
 } from 'react-router-dom'
 
 import Formats from './Formats'
+import FormatForm from './Form'
 
 export default class AdminFormats extends Component {
   static propTypes = {
@@ -30,6 +31,17 @@ export default class AdminFormats extends Component {
         <Route exact path='/admin/formats' render={() => (
           <Formats
             session={session}
+          />
+        )}/>
+        <Route exact path='/admin/formats/add' render={() => (
+          <FormatForm
+            session={session}
+          />
+        )}/>
+        <Route exact path='/admin/formats/edit/:formatId' render={({ match }) => (
+          <FormatForm
+            session={session}
+            formatId={match.params.formatId}
           />
         )}/>
       </Row>

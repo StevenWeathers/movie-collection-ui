@@ -33,11 +33,11 @@ export default class Movies extends Component {
   }
 
   getMovies = async () => {
-    this.setState({
-      isLoading: true,
-    })
-
     try {
+      this.setState({
+        isLoading: true,
+      })
+
       const { data } = await axios.get('/api/movies');
       const { movies } = data.data;
 
