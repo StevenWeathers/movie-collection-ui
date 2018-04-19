@@ -47,7 +47,7 @@ export default class Formats extends Component {
         isLoading: false,
       })
     } catch (e) {
-      console.log('error >>> ', e);
+      this.handleApiError(e)
     }
   }
 
@@ -61,7 +61,15 @@ export default class Formats extends Component {
 
       this.getFormats();
     } catch (e) {
-      console.log('error >>> ', e);
+      this.handleApiError(e)
+    }
+  }
+
+  handleApiError = (error) => {
+    if (error.message && error.message.includes('code 401')) {
+      this.props.history.push('/logout')
+    } else {
+      message.error(`Woops, looks like something went wrong.  Perhaps try again?`);
     }
   }
 

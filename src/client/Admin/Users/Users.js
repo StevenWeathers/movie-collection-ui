@@ -9,7 +9,8 @@ import {
   Divider,
   Spin,
   Icon,
-  Popconfirm
+  Popconfirm,
+  message
 } from 'antd'
 
 const { Column, ColumnGroup } = Table;
@@ -51,7 +52,7 @@ export default class Users extends Component {
         isLoading: false,
       })
     } catch (e) {
-      console.log('error >>> ', e);
+      this.handleApiError(e)
     }
   }
 
@@ -65,7 +66,15 @@ export default class Users extends Component {
 
       this.getUsers();
     } catch (e) {
-      console.log('error >>> ', e);
+      this.handleApiError(e)
+    }
+  }
+
+  handleApiError = (error) => {
+    if (error.message && error.message.includes('code 401')) {
+      this.props.history.push('/logout')
+    } else {
+      message.error(`Woops, looks like something went wrong.  Perhaps try again?`);
     }
   }
 

@@ -67,7 +67,7 @@ class MovieForm extends Component {
         return formats
       }
     } catch (e) {
-      console.log('error >>> ', e)
+      this.handleApiError(e)
     }
   }
 
@@ -83,7 +83,7 @@ class MovieForm extends Component {
         isLoading: false,
       })
     } catch (e) {
-      console.log('error >>> ', e)
+      this.handleApiError(e)
     }
   }
 
@@ -99,7 +99,7 @@ class MovieForm extends Component {
         tmdbResults: results,
       })
     } catch (e) {
-      console.log('error >>> ', e)
+      this.handleApiError(e)
     }
   }
 
@@ -151,13 +151,21 @@ class MovieForm extends Component {
             movieAdded: true,
           })
         } catch (e) {
-          console.log('movie error >>> ', e)
           this.setState({
             isLoading: false,
           })
+          this.handleApiError(e)
         }
       }
     });
+  }
+
+  handleApiError = (error) => {
+    if (error.message && error.message.includes('code 401')) {
+      this.props.history.push('/logout')
+    } else {
+      message.error(`Woops, looks like something went wrong.  Perhaps try again?`);
+    }
   }
 
   render() {

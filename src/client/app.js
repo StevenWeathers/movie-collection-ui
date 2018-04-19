@@ -43,12 +43,12 @@ class MoviesApp extends Component {
   }
 
   handleLogin = (token) => {
-    const tomorrow = new Date()
-    tomorrow.setDate(tomorrow.getDate() + 1)
+    const tokenExpiration = new Date()
+    tokenExpiration.setHours(tokenExpiration.getHours() + 1)
 
     this.props.cookies.set('mcsession', token, {
       path: '/',
-      expires: tomorrow
+      expires: tokenExpiration
     })
 
     this.setState({

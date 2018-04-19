@@ -51,7 +51,7 @@ class FormatForm extends Component {
         isLoading: false,
       })
     } catch (e) {
-      console.log('error >>> ', e)
+      this.handleApiError(e)
     }
   }
 
@@ -85,13 +85,21 @@ class FormatForm extends Component {
             formatAdded: true,
           })
         } catch (e) {
-          console.log('format error >>> ', e)
           this.setState({
             isLoading: false,
           })
+          this.handleApiError(e)
         }
       }
     });
+  }
+
+  handleApiError = (error) => {
+    if (error.message && error.message.includes('code 401')) {
+      this.props.history.push('/logout')
+    } else {
+      message.error(`Woops, looks like something went wrong.  Perhaps try again?`);
+    }
   }
 
   render() {
