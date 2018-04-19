@@ -14,5 +14,11 @@ Utilizes
 =========
 
 React
-Blueprintjs
-FlexboxGrid
+
+React Router
+
+Axios
+
+Ant Design
+
+Hapi
