@@ -12,6 +12,7 @@ import {
 import Login from './Auth/index'
 import Logout from './Auth/Logout'
 import Movies from './Movies/index'
+import Movie from './Movies/Movie'
 import Admin from './Admin/index'
 
 import {
@@ -91,6 +92,11 @@ class MoviesApp extends Component {
           <Content style={{ padding: '0 50px' }}>
             <div style={{ background: '#fff', padding: 24 }}>
               <Route exact path='/' component={Movies} />
+              <Route exact path='/movies/:movieId' render={({ match }) => (
+                <Movie
+                  movieId={match.params.movieId}
+                />
+              )} />
               <Route exact path='/login' render={() => (
                 <Login
                   onLogin={this.handleLogin}

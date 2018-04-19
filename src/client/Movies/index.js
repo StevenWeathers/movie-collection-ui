@@ -55,7 +55,7 @@ export default class Movies extends Component {
           movies.map(({
             title,
             tmdb_image_url,
-            slug
+            _id
           }) => (
             <Col
               xs={24}
@@ -63,12 +63,12 @@ export default class Movies extends Component {
               md={8}
               lg={6}
               xl={4}
-              key={slug}
+              key={_id}
             >
               <Card
-
-                title={title} extra={<Link to={`/movie/${slug}`}>View</Link>}>
-                <img src={`${tmdbHost}${tmdb_image_url}`} />
+                title={title} extra={<Link to={`/movies/${_id}`}>View</Link>}>
+                <img src={`${tmdbHost}${tmdb_image_url}`}
+              />
               </Card>
             </Col>
           ))
