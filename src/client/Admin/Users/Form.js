@@ -15,39 +15,39 @@ import {
 } from 'antd';
 const FormItem = Form.Item;
 
-class FormatForm extends Component {
+class UserForm extends Component {
   static propTypes = {
     session: PropTypes.string.isRequired,
-    formatId: PropTypes.string
+    userId: PropTypes.string
   }
 
   static defaultProps = {
-    formatId: ''
+    userId: ''
   }
   
   state = {
-    format: null,
+    user: null,
     isLoading: false,
-    formatAdded: false,
+    userAdded: false,
   }
 
   componentDidMount() {
-    if (this.props.formatId) {
-      this.getFormat(this.props.formatId);
+    if (this.props.userId) {
+      this.getUser(this.props.userId);
     }
   }
 
-  getFormat = async (formatId) => {
+  getUser = async (userId) => {
     try {
       this.setState({
         isLoading: true,
       })
 
-      const { data } = await axios.get(`/api/formats/${formatId}`)
-      const { format } = data.data
+      const { data } = await axios.get(`/api/users/${userId}`)
+      const { user } = data.data
 
       this.setState({
-        format,
+        user,
         isLoading: false,
       })
     } catch (e) {
@@ -59,11 +59,11 @@ class FormatForm extends Component {
     e.preventDefault()
     const {
       session,
-      formatId
+      userId
     } = this.props
-    const isEdit = formatId !== ''
+    const isEdit = userId !== ''
     const method = isEdit ? 'put' : 'post'
-    const url = isEdit ? `/api/formats/${formatId}` : '/api/formats'
+    const url = isEdit ? `/api/users/${userId}` : '/api/users'
 
     this.props.form.validateFieldsAndScroll(async (err, data) => {
       if (!err) {
@@ -82,10 +82,10 @@ class FormatForm extends Component {
           })
   
           this.setState({
-            formatAdded: true,
+            userAdded: true,
           })
         } catch (e) {
-          console.log('format error >>> ', e)
+          console.log('user error >>> ', e)
           this.setState({
             isLoading: false,
           })
@@ -97,22 +97,22 @@ class FormatForm extends Component {
   render() {
     const {
       form,
-      formatId
+      userId
     } = this.props
     const { getFieldDecorator } = form;
 
     const {
-      format,
+      user,
       isLoading,
-      formatAdded
+      userAdded
     } = this.state
 
-    const isEdit = formatId !== '' && format
-    const titleContext = isEdit ? 'Edit Format' : 'Add Format'
+    const isEdit = userId !== '' && user
+    const titleContext = isEdit ? 'Edit User' : 'Add User'
 
-    if (formatAdded) {
+    if (userAdded) {
       return (
-        <Redirect push to="/admin/formats"/>
+        <Redirect push to="/admin/users"/>
       )
     }
 
@@ -127,11 +127,18 @@ class FormatForm extends Component {
         <h3>{titleContext}</h3>
         
         <FormItem>
-          {getFieldDecorator('title', {
-            rules: [{ required: true, message: 'Please input a Format Title!' }],
-            initialValue: isEdit ? format.title : null
+          {getFieldDecorator('email', {
+            rules: [{ required: true, message: 'Please input an email!' }],
+            initialValue: isEdit ? user.email : null
           })(
-            <Input placeholder="Title" />
+            <Input placeholder="email" />
+          )}
+        </FormItem>
+        <FormItem>
+          {getFieldDecorator('password', {
+            rules: [{ required: true, message: 'Please input a password!' }]
+          })(
+            <Input type="password" placeholder="password" />
           )}
         </FormItem>
         <FormItem>
@@ -144,4 +151,4 @@ class FormatForm extends Component {
   }
 }
 
-export default Form.create()(FormatForm);
+export default Form.create()(UserForm);

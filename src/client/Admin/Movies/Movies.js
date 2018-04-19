@@ -8,7 +8,8 @@ import {
   Table,
   Divider,
   Spin,
-  Icon
+  Icon,
+  Popconfirm
 } from 'antd'
 
 const { Column, ColumnGroup } = Table;
@@ -97,8 +98,15 @@ export default class Movies extends Component {
                 <Button type="primary">
                   <Link to={`/admin/movies/edit/${record._id}`}><Icon type="edit" />Edit</Link>
                 </Button>
-                <Button type="danger" onClick={this.handleMovieDelete(record)}>
-                  <Icon type="delete" />Delete
+                <Button type="danger">
+                  <Popconfirm
+                    title="Are you sure delete this Movie?"
+                    onConfirm={this.handleMovieDelete(record)}
+                    okText="Yes"
+                    cancelText="No"
+                  >
+                    <a><Icon type="delete" />Delete</a>
+                  </Popconfirm>
                 </Button>
               </Button.Group>
             )}

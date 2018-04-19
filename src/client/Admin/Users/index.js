@@ -10,6 +10,7 @@ import {
 } from 'react-router-dom'
 
 import Users from './Users'
+import UserForm from './Form'
 
 export default class AdminUsers extends Component {
   static propTypes = {
@@ -29,6 +30,17 @@ export default class AdminUsers extends Component {
         <Route exact path='/admin/users' render={() => (
           <Users
             session={session}
+          />
+        )}/>
+        <Route exact path='/admin/users/add' render={() => (
+          <UserForm
+            session={session}
+          />
+        )}/>
+        <Route exact path='/admin/users/edit/:formatId' render={({ match }) => (
+          <UserForm
+            session={session}
+            userId={match.params.userId}
           />
         )}/>
       </Row>

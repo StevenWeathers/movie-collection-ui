@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import axios from 'axios'
+
 import {
   Row,
   Button,
   Table,
   Divider,
-  Spin
+  Spin,
+  Icon,
+  Popconfirm
 } from 'antd'
 
 const { Column, ColumnGroup } = Table;
@@ -32,6 +35,10 @@ export default class Users extends Component {
 
   getUsers = async () => {
     try {
+      this.setState({
+        isLoading: true,
+      })
+
       const { data } = await axios.get('/api/users', {
         headers: {
           'Authorization': this.props.session
@@ -48,6 +55,20 @@ export default class Users extends Component {
     }
   }
 
+  handleUserDelete = user => async () => {
+    try {
+      const response = await axios.delete(`/api/users/${user._id}`, {
+        headers: {
+          'Authorization': this.props.session
+        }
+      })
+
+      this.getUsers();
+    } catch (e) {
+      console.log('error >>> ', e);
+    }
+  }
+
   render () {
     const {
       isLoading,
@@ -55,9 +76,9 @@ export default class Users extends Component {
     } = this.state
 
     if (isLoading) {
-        return (
-            <Spin size="large" />
-        )
+      return (
+        <Spin size="large" />
+      )
     }
 
     return (
@@ -72,12 +93,21 @@ export default class Users extends Component {
             title="Action"
             key="action"
             render={(text, record) => (
-              <span>
-                <a href="javascript:;">Edit</a>
-                <Divider type="vertical" />
-                <a href="javascript:;">Delete</a>
-                <Divider type="vertical" />
-              </span>
+              <Button.Group>
+                <Button type="primary">
+                  <Link to={`/admin/users/edit/${record._id}`}><Icon type="edit" />Edit</Link>
+                </Button>
+                <Button type="danger">
+                  <Popconfirm
+                    title="Are you sure delete this User?"
+                    onConfirm={this.handleUserDelete(record)}
+                    okText="Yes"
+                    cancelText="No"
+                  >
+                    <a><Icon type="delete" />Delete</a>
+                  </Popconfirm>
+                </Button>
+              </Button.Group>
             )}
           />
         </Table>
