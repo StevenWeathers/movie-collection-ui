@@ -7,7 +7,8 @@ import {
   Button,
   Table,
   Divider,
-  Spin
+  Spin,
+  Icon
 } from 'antd'
 
 const { Column, ColumnGroup } = Table;
@@ -32,6 +33,10 @@ export default class Movies extends Component {
   }
 
   getMovies = async () => {
+    this.setState({
+      isLoading: true,
+    })
+
     try {
       const { data } = await axios.get('/api/movies');
       const { movies } = data.data;
@@ -45,11 +50,21 @@ export default class Movies extends Component {
     }
   }
 
-  render () {
-    const {
-      session
-    } = this.props
+  handleMovieDelete = movie => async () => {
+    try {
+      const response = await axios.delete(`/api/movies/${movie._id}`, {
+        headers: {
+          'Authorization': this.props.session
+        }
+      })
 
+      this.getMovies();
+    } catch (e) {
+      console.log('error >>> ', e);
+    }
+  }
+
+  render () {
     const {
       isLoading,
       movies,
@@ -78,12 +93,14 @@ export default class Movies extends Component {
             title="Action"
             key="action"
             render={(text, record) => (
-              <span>
-                <a href="javascript:;">Edit</a>
-                <Divider type="vertical" />
-                <a href="javascript:;">Delete</a>
-                <Divider type="vertical" />
-              </span>
+              <Button.Group>
+                <Button type="primary">
+                  <Link to={`/admin/movies/edit/${record._id}`}><Icon type="edit" />Edit</Link>
+                </Button>
+                <Button type="danger" onClick={this.handleMovieDelete(record)}>
+                  <Icon type="delete" />Delete
+                </Button>
+              </Button.Group>
             )}
           />
         </Table>

@@ -50,10 +50,6 @@ export default class Users extends Component {
 
   render () {
     const {
-      session
-    } = this.props
-
-    const {
       isLoading,
       users,
     } = this.state

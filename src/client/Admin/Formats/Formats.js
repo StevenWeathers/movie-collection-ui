@@ -46,10 +46,6 @@ export default class Formats extends Component {
 
   render () {
     const {
-      session
-    } = this.props
-
-    const {
       isLoading,
       formats,
     } = this.state

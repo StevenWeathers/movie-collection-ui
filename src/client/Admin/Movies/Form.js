@@ -21,27 +21,57 @@ import {
 const FormItem = Form.Item;
 const Option = Select.Option;
 
-class AddMovieForm extends Component {
+class MovieForm extends Component {
   static propTypes = {
-    session: PropTypes.string.isRequired
+    session: PropTypes.string.isRequired,
+    movieId: PropTypes.string
+  }
+
+  static defaultProps = {
+    movieId: ''
   }
   
   state = {
+    movie: null,
     formats: [],
     isLoading: true,
     movieAdded: false,
   }
 
   componentDidMount() {
-    this.getFormats();
+    if (this.props.movieId) {
+      this.getMovie(this.props.movieId);
+    } else {
+      this.getFormats();
+    }
   }
 
-  getFormats = async () => {
+  getFormats = async (setState = true) => {
     try {
       const { data } = await axios.get('/api/formats')
       const { formats } = data.data
 
+      if (setState) {
+        this.setState({
+          formats,
+          isLoading: false,
+        })
+      } else {
+        return formats
+      }
+    } catch (e) {
+      console.log('error >>> ', e)
+    }
+  }
+
+  getMovie = async (movieId) => {
+    try {
+      const formats = await this.getFormats(false);
+      const { data } = await axios.get(`/api/movies/${movieId}`)
+      const { movie } = data.data
+
       this.setState({
+        movie,
         formats,
         isLoading: false,
       })
@@ -52,17 +82,27 @@ class AddMovieForm extends Component {
 
   handleSubmit = (e) => {
     e.preventDefault()
+    const {
+      session,
+      movieId
+    } = this.props
+    const isEdit = movieId !== ''
+    const method = isEdit ? 'put' : 'post'
+    const url = isEdit ? `/api/movies/${movieId}` : '/api/movies'
 
-    this.props.form.validateFieldsAndScroll(async (err, values) => {
+    this.props.form.validateFieldsAndScroll(async (err, data) => {
       if (!err) {
         this.setState({
           isLoading: true,
         })
 
         try {
-          const response = await axios.post('/api/movies', values, {
+          const response = await axios({
+            method,
+            url,
+            data,
             headers: {
-              'Authorization': this.props.session
+              'Authorization': session
             }
           })
   
@@ -81,12 +121,17 @@ class AddMovieForm extends Component {
 
   render() {
     const {
-      form
+      form,
+      movieId
     } = this.props
+
+    const isEdit = movieId !== ''
+    const titleContext = isEdit ? 'Edit Movie' : 'Add Movie'
 
     const { getFieldDecorator } = form;
 
     const {
+      movie,
       isLoading,
       formats,
       movieAdded
@@ -106,11 +151,12 @@ class AddMovieForm extends Component {
 
     return (
       <Form onSubmit={this.handleSubmit}>
-        <Divider />
-        <h3>Add Movie</h3>
+        <h3>{titleContext} Movie</h3>
+        
         <FormItem>
           {getFieldDecorator('title', {
             rules: [{ required: true, message: 'Please input a Movie Title!' }],
+            initialValue: isEdit ? movie.title : null
           })(
             <Input placeholder="Title" />
           )}
@@ -121,6 +167,7 @@ class AddMovieForm extends Component {
               { required: true, message: 'Please input a Movie Year' },
               { pattern: /(?:19|20)\d{2}/, message: 'Please enter a valid year e.g. 2018' }
             ],
+            initialValue: isEdit ? movie.year : null
           })(
             <Input placeholder="Year" />
           )}
@@ -128,6 +175,7 @@ class AddMovieForm extends Component {
         <FormItem>
           {getFieldDecorator('upc', {
             rules: [{ required: true, message: 'Please input a Movie UPC' }],
+            initialValue: isEdit ? movie.upc : null
           })(
             <Input placeholder="UPC" />
           )}
@@ -135,6 +183,7 @@ class AddMovieForm extends Component {
         <FormItem>
           {getFieldDecorator('tmdb_id', {
             rules: [{ required: true, message: 'Please input a Movie TMDB ID' }],
+            initialValue: isEdit ? movie.tmdb_id : null
           })(
             <Input placeholder="TMDB ID" />
           )}
@@ -142,6 +191,7 @@ class AddMovieForm extends Component {
         <FormItem>
           {getFieldDecorator('tmdb_image_url', {
             rules: [{ required: true, message: 'Please input a Movie TMDB Image URL' }],
+            initialValue: isEdit ? movie.tmdb_image_url : null
           })(
             <Input placeholder="TMDB Image URL" />
           )}
@@ -149,7 +199,7 @@ class AddMovieForm extends Component {
         <FormItem>
           {getFieldDecorator('format', {
             rules: [{ required: true, message: 'Please select a Movie Format' }],
-            initialValue: formats[0].title,
+            initialValue: isEdit ? movie.format : formats[0].title
           })(
             <Select>
               {
@@ -170,4 +220,4 @@ class AddMovieForm extends Component {
   }
 }
 
-export default Form.create()(AddMovieForm);
+export default Form.create()(MovieForm);

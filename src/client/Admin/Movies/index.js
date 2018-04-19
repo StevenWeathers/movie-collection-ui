@@ -10,7 +10,7 @@ import {
 } from 'react-router-dom'
 
 import Movies from './Movies'
-import AddMovie from './Add'
+import MovieForm from './Form'
 
 export default class AdminMovies extends Component {
   static propTypes = {
@@ -34,8 +34,14 @@ export default class AdminMovies extends Component {
           />
         )}/>
         <Route exact path='/admin/movies/add' render={() => (
-          <AddMovie
+          <MovieForm
             session={session}
+          />
+        )}/>
+        <Route exact path='/admin/movies/edit/:movieId' render={({ match }) => (
+          <MovieForm
+            session={session}
+            movieId={match.params.movieId}
           />
         )}/>
       </Row>
