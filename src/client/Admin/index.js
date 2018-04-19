@@ -26,7 +26,7 @@ export default class Admin extends Component {
     } = this.props
 
     return (
-      <Row gutter={16}>
+      <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
         <Menu
           mode='horizontal'
         >

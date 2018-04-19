@@ -9,7 +9,8 @@ import {
   Redirect
 } from 'react-router-dom'
 
-import Login from './login'
+import Login from './Auth/index'
+import Logout from './Auth/Logout'
 import Movies from './Movies/index'
 import Admin from './Admin/index'
 
@@ -54,6 +55,14 @@ class MoviesApp extends Component {
     })
   }
 
+  handleLogout = () => {
+    this.props.cookies.remove('mcsession')
+
+    this.setState({
+      session: null
+    })
+  }
+
   render () {
     const {
       session
@@ -71,6 +80,12 @@ class MoviesApp extends Component {
             >
               <Menu.Item key='home'><Link to='/'>MyMovies</Link></Menu.Item>
               <Menu.Item key='admin'><Link to='/admin'>Admin</Link></Menu.Item>
+              {
+                session &&
+                <Menu.Item key='users'>
+                  <Link to='/logout'>Logout</Link>
+                </Menu.Item>
+              }
             </Menu>
           </Header>
           <Content style={{ padding: '0 50px' }}>
@@ -79,6 +94,11 @@ class MoviesApp extends Component {
               <Route exact path='/login' render={() => (
                 <Login
                   onLogin={this.handleLogin}
+                />
+              )} />
+              <Route exact path='/logout' render={() => (
+                <Logout
+                  onLogout={this.handleLogout}
                 />
               )} />
               <Route path='/admin' render={() => (

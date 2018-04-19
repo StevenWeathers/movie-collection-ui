@@ -25,7 +25,7 @@ export default class AdminMovies extends Component {
     return (
       <Row>
         <br />
-        Manage movies
+        <h1>Manage movies</h1>
         <Divider />
 
         <Route exact path='/admin/movies' render={() => (

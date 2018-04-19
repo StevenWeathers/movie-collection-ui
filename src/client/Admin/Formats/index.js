@@ -25,7 +25,7 @@ export default class AdminFormats extends Component {
     return (
       <Row>
         <br />
-        Manage formats
+        <h1>Manage formats</h1>
         <Divider />
 
         <Route exact path='/admin/formats' render={() => (

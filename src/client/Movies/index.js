@@ -50,7 +50,7 @@ export default class Movies extends Component {
     }
 
     return (
-      <Row gutter={16}>
+      <Row gutter={{ xs: 8, sm: 16, md: 24, lg: 32 }}>
         {
           movies.map(({
             title,
@@ -58,7 +58,11 @@ export default class Movies extends Component {
             slug
           }) => (
             <Col
-              span={6}
+              xs={24}
+              sm={12}
+              md={8}
+              lg={6}
+              xl={4}
               key={slug}
             >
               <Card

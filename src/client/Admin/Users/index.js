@@ -24,7 +24,7 @@ export default class AdminUsers extends Component {
     return (
       <Row>
         <br />
-        Manage Users
+        <h1>Manage Users</h1>
         <Divider />
         <Route exact path='/admin/users' render={() => (
           <Users
