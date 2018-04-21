@@ -66,9 +66,18 @@ export default class Movies extends Component {
               key={_id}
             >
               <Card
-                title={title} extra={<Link to={`/movies/${_id}`}>View</Link>}>
-                <img src={`${tmdbHost}${tmdb_image_url}`}
-              />
+                title={title}
+                extra={<Link to={`/movies/${_id}`}>View</Link>}
+                style={{
+                  marginBottom: '2em'
+                }}
+              >
+                <img
+                  src={`${tmdbHost}${tmdb_image_url}`}
+                  style={{
+                    width: '100%'
+                  }}
+                />
               </Card>
             </Col>
           ))
