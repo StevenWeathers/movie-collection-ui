@@ -5,7 +5,8 @@
   "author": "Steven Weathers",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack --config webpack.config.js --mode=production && node src/server/server.js"
+    "build": "webpack --config webpack.config.js --mode=production",
+    "start": "node src/server/server.js"
   },
   "dependencies": {
     "antd": "^3.4.1",

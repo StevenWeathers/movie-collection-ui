@@ -9,6 +9,8 @@ services:
       - api
     networks:
       - skynet
+    environment:
+      - movie_api_host=movies.stevenweathers.com
   api:
     image: stevenweathers/movie-collection-api
     ports:
