@@ -92,7 +92,12 @@ class MoviesApp extends Component {
           <Content style={{ padding: '0 50px' }}>
             <div style={{ background: '#fff', padding: 24 }}>
               <Route exact path='/' component={Movies} />
-              <Route exact path='/movies/:movieId' render={({ match }) => (
+              <Route path='/search/:movieTitle' render={({ match }) => (
+                <Movies
+                  movieTitle={match.params.movieTitle}
+                />
+              )} />
+              <Route path='/movies/:movieId' render={({ match }) => (
                 <Movie
                   movieId={match.params.movieId}
                 />
@@ -122,4 +127,4 @@ class MoviesApp extends Component {
   }
 }
 
-export default withCookies(MoviesApp);
+export default withCookies(MoviesApp)
