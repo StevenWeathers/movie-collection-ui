@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import {
   Redirect
 } from 'react-router-dom'
@@ -14,12 +15,20 @@ import {
 const Search = Input.Search;
 
 class SearchForm extends Component {
+  static propTypes = {
+    redirectTo: PropTypes.string
+  }
+
+  static defaultProps = {
+    redirectTo: 'search'
+  }
+
   state = {
     searchQuery: ''
   }
 
   handleSearch = (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     this.props.form.validateFields((err, values) => {
       if (!err && values.search !== undefined) {
@@ -31,8 +40,9 @@ class SearchForm extends Component {
   }
 
   render() {
-    const { searchQuery } = this.state;
-    const { getFieldDecorator } = this.props.form;
+    const { searchQuery } = this.state
+    const { form, redirectTo } = this.props
+    const { getFieldDecorator } = form
 
     return (
       <Form layout="inline" onSubmit={this.handleSearch} style={{ marginBottom: 20 }}>
@@ -45,7 +55,7 @@ class SearchForm extends Component {
         )}
         {
           searchQuery !== '' &&
-          <Redirect push to={`/search/${searchQuery}`} />
+          <Redirect push to={`/${redirectTo}/${searchQuery}`} />
         }
       </Form>
     );

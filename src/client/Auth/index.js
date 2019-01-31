@@ -25,7 +25,7 @@ class LoginForm extends Component {
   }
 
   handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     this.props.form.validateFieldsAndScroll(async (err, values) => {
       if (!err) {
@@ -49,7 +49,8 @@ class LoginForm extends Component {
             isLoggedIn: true,
           })
         } catch (e) {
-          console.log('add movie error >>> ', e);
+          console.log('add movie error >>> ', e)
+
           this.setState({
             isLoading: false,
           })
@@ -59,7 +60,7 @@ class LoginForm extends Component {
   }
 
   render() {
-    const { getFieldDecorator } = this.props.form;
+    const { getFieldDecorator } = this.props.form
 
     const {
       isLoading,

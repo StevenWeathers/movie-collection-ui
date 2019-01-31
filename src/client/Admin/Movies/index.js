@@ -33,6 +33,12 @@ export default class AdminMovies extends Component {
             session={session}
           />
         )}/>
+        <Route path='/admin/movies/:movieTitle' render={({ match }) => (
+          <Movies
+            session={session}
+            movieTitle={match.params.movieTitle}
+          />
+        )} />
         <Route exact path='/admin/movies/add' render={() => (
           <MovieForm
             session={session}

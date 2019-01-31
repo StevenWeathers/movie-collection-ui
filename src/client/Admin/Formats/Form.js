@@ -33,7 +33,7 @@ class FormatForm extends Component {
 
   componentDidMount() {
     if (this.props.formatId) {
-      this.getFormat(this.props.formatId);
+      this.getFormat(this.props.formatId)
     }
   }
 
@@ -107,7 +107,7 @@ class FormatForm extends Component {
       form,
       formatId
     } = this.props
-    const { getFieldDecorator } = form;
+    const { getFieldDecorator } = form
 
     const {
       format,

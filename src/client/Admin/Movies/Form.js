@@ -47,9 +47,9 @@ class MovieForm extends Component {
 
   componentDidMount() {
     if (this.props.movieId) {
-      this.getMovie(this.props.movieId);
+      this.getMovie(this.props.movieId)
     } else {
-      this.getFormats();
+      this.getFormats()
     }
   }
 
@@ -164,7 +164,7 @@ class MovieForm extends Component {
     if (error.message && error.message.includes('code 401')) {
       this.props.history.push('/logout')
     } else {
-      message.error(`Woops, looks like something went wrong.  Perhaps try again?`);
+      message.error(`Woops, looks like something went wrong.  Perhaps try again?`)
     }
   }
 
@@ -173,7 +173,7 @@ class MovieForm extends Component {
       form,
       movieId
     } = this.props
-    const { getFieldDecorator } = form;
+    const { getFieldDecorator } = form
 
     const {
       movie,

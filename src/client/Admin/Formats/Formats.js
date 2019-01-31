@@ -30,7 +30,7 @@ export default class Formats extends Component {
   }
 
   componentDidMount = () => {
-    this.getFormats();
+    this.getFormats()
   }
 
   getFormats = async () => {
@@ -39,8 +39,8 @@ export default class Formats extends Component {
         isLoading: true,
       })
 
-      const { data } = await axios.get('/api/formats');
-      const { formats } = data.data;
+      const { data } = await axios.get('/api/formats')
+      const { formats } = data.data
 
       this.setState({
         formats,
@@ -59,7 +59,7 @@ export default class Formats extends Component {
         }
       })
 
-      this.getFormats();
+      this.getFormats()
     } catch (e) {
       this.handleApiError(e)
     }

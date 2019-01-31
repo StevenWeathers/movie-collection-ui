@@ -31,7 +31,7 @@ export default class Users extends Component {
   }
 
   componentDidMount = () => {
-    this.getUsers();
+    this.getUsers()
   }
 
   getUsers = async () => {
@@ -45,7 +45,7 @@ export default class Users extends Component {
           'Authorization': this.props.session
         }
       });
-      const { users } = data.data;
+      const { users } = data.data
 
       this.setState({
         users,
@@ -64,7 +64,7 @@ export default class Users extends Component {
         }
       })
 
-      this.getUsers();
+      this.getUsers()
     } catch (e) {
       this.handleApiError(e)
     }
@@ -74,7 +74,7 @@ export default class Users extends Component {
     if (error.message && error.message.includes('code 401')) {
       this.props.history.push('/logout')
     } else {
-      message.error(`Woops, looks like something went wrong.  Perhaps try again?`);
+      message.error(`Woops, looks like something went wrong.  Perhaps try again?`)
     }
   }
 

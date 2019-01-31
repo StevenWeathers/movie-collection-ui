@@ -33,7 +33,7 @@ class UserForm extends Component {
 
   componentDidMount() {
     if (this.props.userId) {
-      this.getUser(this.props.userId);
+      this.getUser(this.props.userId)
     }
   }
 
@@ -98,7 +98,7 @@ class UserForm extends Component {
     if (error.message && error.message.includes('code 401')) {
       this.props.history.push('/logout')
     } else {
-      message.error(`Woops, looks like something went wrong.  Perhaps try again?`);
+      message.error(`Woops, looks like something went wrong.  Perhaps try again?`)
     }
   }
 

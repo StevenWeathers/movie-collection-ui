@@ -38,7 +38,7 @@ export default class Movie extends Component {
         isLoading: false
       })
     } catch (e) {
-      console.log('error >>> ', e);
+      console.log('error >>> ', e)
     }
   }
 
